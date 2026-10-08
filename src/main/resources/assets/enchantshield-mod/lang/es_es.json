@@ -1,0 +1,20 @@
+# Enchant Shield Mod Traducciones (Español)
+
+# Nombre del mod
+enchantshield-mod.name=Enchant Shield Mod
+
+# Items
+item.enchantshield-mod.enchantable_shield=Escudo Encantable
+item.enchantshield-mod.reinforced_shield=Escudo Reforzado
+item.enchantshield-mod.mystical_shield=Escudo Místico
+item.enchantshield-mod.wooden_shield=Escudo de Madera
+
+# Encantamientos
+enchantment.enchantshield-mod.example_shield_enchantment=Protección Proyectiles
+enchantment.enchantshield-mod.example_shield_enchantment.description=Reduce el daño de proyectiles al bloquear
+
+# Tooltips
+item.enchantshield-mod.enchantable_shield.tooltip=Se puede encantar en la Mesa de Encantamientos
+item.enchantshield-mod.reinforced_shield.tooltip=Alta durabilidad, más difícil de encantar
+item.enchantshield-mod.mystical_shield.tooltip=Baja durabilidad, muy encantable
+item.enchantshield-mod.wooden_shield.tooltip=Escudo de madera básico

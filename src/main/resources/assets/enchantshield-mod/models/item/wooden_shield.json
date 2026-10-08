@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "enchantshield-mod:item/wooden_shield"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "using_item": 1
+      },
+      "model": "enchantshield-mod:item/wooden_shield_blocking"
+    }
+  ]
+}

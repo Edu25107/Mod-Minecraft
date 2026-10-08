@@ -1,0 +1,8 @@
+{
+  "item.enchantshield-mod.enchantable_shield": "Enchantable Shield",
+  "item.enchantshield-mod.reinforced_shield": "Reinforced Shield",
+  "item.enchantshield-mod.mystical_shield": "Mystical Shield",
+  "item.enchantshield-mod.wooden_shield": "Wooden Shield",
+  "enchantment.enchantshield-mod.example_shield_enchantment": "Projectile Protection",
+  "enchantment.enchantshield-mod.example_shield_enchantment.description": "Reduces damage from projectiles when blocking"
+}

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:enchantment",
+  "definition": {
+    "description": {
+      "translate": "enchantment.enchantshield-mod.example_shield_enchantment"
+    },
+    "supported_items": "#enchantshield-mod:shields",
+    "weight": 5,
+    "max_level": 3,
+    "min_cost": {
+      "type": "minecraft:linear",
+      "base": 10,
+      "per_level_above_first": 15
+    },
+    "max_cost": {
+      "type": "minecraft:linear",
+      "base": 30,
+      "per_level_above_first": 15
+    },
+    "anvil_cost": 4,
+    "slots": [
+      "offhand"
+    ],
+    "effects": {}
+  }
+}
