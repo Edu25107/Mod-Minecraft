@@ -3,14 +3,18 @@ package shield.modid.item;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.component.BlocksAttacks;
+import net.minecraft.world.level.block.entity.BannerPatternLayers;
+import net.minecraft.sounds.SoundEvents;
 import shield.modid.EnchantShieldMod;
 
 /**
@@ -30,24 +34,35 @@ public class ShieldTemplate extends ShieldItem {
 
     /**
      * Crea las propiedades base para un escudo con ID y componente de bloqueo.
-     * En 1.21.4+ se requiere el componente minecraft:blocks_attacks para que funcione el bloqueo.
+     * Configuración exacta como vanilla (componente directo).
      */
     public static Properties createShieldProperties(int maxDamage, Identifier id) {
-        // Componente de bloqueo estilo vanilla (usar sonidos por defecto)
+        // Componente de bloqueo con 100% reducción de daño (multiplicador 0.0 = daño × 0)
         BlocksAttacks shieldComponent = new BlocksAttacks(
-            0.25f,                    // blockDelaySeconds (5 ticks)
-            0.15f,                    // disableCooldownScale
-            java.util.List.of(),      // damageReductions (vacío = usa defaults)
-            BlocksAttacks.ItemDamageFunction.DEFAULT, // itemDamage
-            java.util.Optional.empty(), // bypassedBy
-            java.util.Optional.empty(), // blockSound (default)
-            java.util.Optional.empty()  // disableSound (default)
+            0.25f,                           // blockDelaySeconds (5 ticks)
+            0.15f,                           // disableCooldownScale
+            java.util.List.of(
+                new BlocksAttacks.DamageReduction(
+                    0.0f,                    // 0.0f = 100% reducción (multiplicador de daño = 0)
+                    java.util.Optional.<net.minecraft.core.HolderSet<net.minecraft.world.damagesource.DamageType>>empty(),
+                    0.0f, 0.0f               // min/max reduction = 0 (daño × 0)
+                )
+            ),
+            BlocksAttacks.ItemDamageFunction.DEFAULT,
+            java.util.Optional.empty(),
+            java.util.Optional.empty(),
+            java.util.Optional.empty()
         );
         
         return new Properties()
                 .durability(maxDamage)
                 .stacksTo(1)
                 .setId(ResourceKey.create(Registries.ITEM, id))
-                .component(DataComponents.BLOCKS_ATTACKS, shieldComponent);
+                // Componentes vanilla del escudo (orden exacto)
+                .component(DataComponents.BANNER_PATTERNS, net.minecraft.world.level.block.entity.BannerPatternLayers.EMPTY)
+                .repairable(ItemTags.WOODEN_TOOL_MATERIALS)
+                .equippableUnswappable(EquipmentSlot.OFFHAND)
+                .component(DataComponents.BLOCKS_ATTACKS, shieldComponent)
+                .component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK);
     }
 }

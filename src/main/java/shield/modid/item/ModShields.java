@@ -55,7 +55,7 @@ public class ModShields {
     public static void registerShields() {
         EnchantShieldMod.LOGGER.info("Registering custom shields...");
 
-        // Crear y registrar cada escudo
+        // Crear y registrar cada escudo usando ShieldTemplate (que extiende ShieldItem)
         ENCHANTABLE_SHIELD = registerShield(
             "enchantable_shield",
             ShieldTemplate.createShieldProperties(336, EnchantShieldMod.id("enchantable_shield")),
@@ -88,9 +88,11 @@ public class ModShields {
 
     /**
      * Registra un escudo con encantabilidad personalizada.
+     * Usa ShieldTemplate para asegurar que el componente BLOCKS_ATTACKS se aplique correctamente.
      */
     private static ShieldItem registerShield(String name, Properties properties, int enchantability) {
-        ShieldItem shield = new ShieldItem(properties);
+        // IMPORTANTE: Usar ShieldTemplate en lugar de ShieldItem para que se use nuestra clase personalizada
+        ShieldItem shield = new ShieldTemplate(properties);
         
         ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, EnchantShieldMod.id(name));
         Registry.register(BuiltInRegistries.ITEM, key, shield);

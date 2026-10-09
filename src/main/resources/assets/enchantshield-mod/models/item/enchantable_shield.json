@@ -1,14 +1,6 @@
 {
-  "parent": "item/generated",
+  "type": "minecraft:shield",
   "textures": {
-    "layer0": "enchantshield-mod:item/enchantable_shield"
-  },
-  "overrides": [
-    {
-      "predicate": {
-        "using_item": 1
-      },
-      "model": "enchantshield-mod:item/enchantable_shield_blocking"
-    }
-  ]
+    "particle": "enchantshield-mod:item/enchantable_shield"
+  }
 }
