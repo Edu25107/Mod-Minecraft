@@ -67,10 +67,9 @@ def main():
     output_dir = r"C:\Users\videojuegos\Desktop\enchantshield-mod-template-26.3\src\main\resources\assets\enchantshield-mod\textures\item"
     os.makedirs(output_dir, exist_ok=True)
     
-    # Crear borde compartido
+    # Crear borde compartido (se compone sobre cada escudo)
     border = create_shield_border()
-    border.save(os.path.join(output_dir, "shield_border.png"))
-    
+
     # Crear cada escudo
     for name, rgb in SHIELD_COLORS.items():
         base = create_shield_base(name, rgb)

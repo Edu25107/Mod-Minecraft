@@ -1,0 +1,30 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# Compiled class files
+*.class
+
+# Generated sources (Loom)
+remappedSrc/
+
+# Runs
+run/
+runs/
+
+# IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

@@ -1,28 +1,33 @@
 {
-  "parent": "item/generated",
+  "gui_light": "front",
   "textures": {
-    "layer0": "enchantshield-mod:item/wooden_shield"
+    "particle": "enchantshield-mod:item/wooden_shield"
   },
   "display": {
-    "firstperson_righthand": {
-      "rotation": [0, -90, 25],
-      "translation": [1.13, 3.2, -1.13],
-      "scale": [0.55, 0.55, 0.55]
-    },
-    "firstperson_lefthand": {
-      "rotation": [0, 90, -25],
-      "translation": [-1.13, 3.2, -1.13],
-      "scale": [0.55, 0.55, 0.55]
-    },
     "thirdperson_righthand": {
-      "rotation": [0, 0, 0],
-      "translation": [0, 0, 0],
-      "scale": [1.5, 1.5, 1.5]
+      "rotation": [45, 155, 0],
+      "translation": [-3.49, 11, -2],
+      "scale": [1, 1, 1]
     },
     "thirdperson_lefthand": {
-      "rotation": [0, 0, 0],
-      "translation": [0, 0, 0],
-      "scale": [1.5, 1.5, 1.5]
+      "rotation": [45, 155, 0],
+      "translation": [11.51, 7, 2.5],
+      "scale": [1, 1, 1]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, 180, -5],
+      "translation": [-15, 3.25, -11],
+      "scale": [1.25, 1.25, 1.25]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 180, -5],
+      "translation": [5, 5, -11],
+      "scale": [1.25, 1.25, 1.25]
+    },
+    "gui": {
+      "rotation": [15, -25, -5],
+      "translation": [2, 3, 0],
+      "scale": [0.65, 0.65, 0.65]
     }
   }
 }

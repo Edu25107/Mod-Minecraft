@@ -2,19 +2,27 @@
   "model": {
     "type": "minecraft:condition",
     "property": "minecraft:using_item",
-    "on_true": {
-      "type": "minecraft:special",
-      "base": "enchantshield-mod:item/wooden_shield",
-      "model": {
-        "type": "minecraft:shield"
-      }
-    },
     "on_false": {
       "type": "minecraft:special",
       "base": "enchantshield-mod:item/wooden_shield",
       "model": {
-        "type": "minecraft:shield"
+        "type": "enchantshield-mod:custom_shield",
+        "texture": "enchantshield-mod:wooden_shield_base"
       }
+    },
+    "on_true": {
+      "type": "minecraft:special",
+      "base": "enchantshield-mod:item/wooden_shield_blocking",
+      "model": {
+        "type": "enchantshield-mod:custom_shield",
+        "texture": "enchantshield-mod:wooden_shield_base"
+      }
+    },
+    "transformation": {
+      "left_rotation": [0.0, 0.0, 0.0, 1.0],
+      "right_rotation": [0.0, 0.0, 0.0, 1.0],
+      "scale": [1.0, -1.0, -1.0],
+      "translation": [0.0, 0.0, 0.0]
     }
   }
 }

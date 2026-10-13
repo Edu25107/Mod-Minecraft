@@ -22,9 +22,8 @@ public class GenerateTextures {
         String outputDir = "src/main/resources/assets/enchantshield-mod/textures/item";
         new File(outputDir).mkdirs();
 
-        // Crear borde compartido
+        // Crear borde compartido (se compone sobre cada escudo)
         BufferedImage border = createBorder();
-        ImageIO.write(border, "PNG", new File(outputDir + "/shield_border.png"));
 
         // Crear cada escudo
         for (Map.Entry<String, Color> entry : SHIELD_COLORS.entrySet()) {

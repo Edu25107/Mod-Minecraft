@@ -1,13 +1,14 @@
 package shield.modid.item;
 
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
+import java.util.List;
+import java.util.Optional;
+
 import net.minecraft.core.registries.Registries;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
@@ -15,7 +16,6 @@ import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.level.block.entity.BannerPatternLayers;
 import net.minecraft.sounds.SoundEvents;
-import shield.modid.EnchantShieldMod;
 
 /**
  * Template para crear escudos personalizados encantables en la mesa de encantamientos.
@@ -23,46 +23,47 @@ import shield.modid.EnchantShieldMod;
  */
 public class ShieldTemplate extends ShieldItem {
 
-    /**
-     * Crea un nuevo escudo template.
-     * 
-     * @param properties Propiedades del item CON ID ya establecido
-     */
     public ShieldTemplate(Properties properties) {
         super(properties);
     }
 
     /**
-     * Crea las propiedades base para un escudo con ID y componente de bloqueo.
-     * Configuración exacta como vanilla (componente directo).
+     * Crea las propiedades base de un escudo, replicando el comportamiento del escudo
+     * vanilla (bloqueo, sonidos, reparación) pero con durabilidad, encantabilidad y
+     * material de reparación personalizados.
+     *
+     * @param maxDamage      durabilidad del escudo
+     * @param id             id del item (namespace:path)
+     * @param enchantability encantabilidad (valor usado por la mesa de encantamientos)
+     * @param repairItem     tag de items que reparan el escudo
      */
-    public static Properties createShieldProperties(int maxDamage, Identifier id) {
-        // Componente de bloqueo con 100% reducción de daño (multiplicador 0.0 = daño × 0)
-        BlocksAttacks shieldComponent = new BlocksAttacks(
-            0.25f,                           // blockDelaySeconds (5 ticks)
-            0.15f,                           // disableCooldownScale
-            java.util.List.of(
-                new BlocksAttacks.DamageReduction(
-                    0.0f,                    // 0.0f = 100% reducción (multiplicador de daño = 0)
-                    java.util.Optional.<net.minecraft.core.HolderSet<net.minecraft.world.damagesource.DamageType>>empty(),
-                    0.0f, 0.0f               // min/max reduction = 0 (daño × 0)
-                )
-            ),
-            BlocksAttacks.ItemDamageFunction.DEFAULT,
-            java.util.Optional.empty(),
-            java.util.Optional.empty(),
-            java.util.Optional.empty()
-        );
-        
+    public static Properties createShieldProperties(int maxDamage, Identifier id, int enchantability, TagKey<Item> repairItem) {
         return new Properties()
                 .durability(maxDamage)
                 .stacksTo(1)
                 .setId(ResourceKey.create(Registries.ITEM, id))
-                // Componentes vanilla del escudo (orden exacto)
-                .component(DataComponents.BANNER_PATTERNS, net.minecraft.world.level.block.entity.BannerPatternLayers.EMPTY)
-                .repairable(ItemTags.WOODEN_TOOL_MATERIALS)
+                .enchantable(enchantability)
+                // Componentes vanilla del escudo
+                .component(DataComponents.BANNER_PATTERNS, BannerPatternLayers.EMPTY)
+                .repairable(repairItem)
                 .equippableUnswappable(EquipmentSlot.OFFHAND)
-                .component(DataComponents.BLOCKS_ATTACKS, shieldComponent)
+                .delayedComponent(
+                        DataComponents.BLOCKS_ATTACKS,
+                        context -> new BlocksAttacks(
+                                0.25F,                          // blockDelaySeconds (5 ticks)
+                                1.0F,                           // disableCooldownScale
+                                List.of(new BlocksAttacks.DamageReduction(
+                                        90.0F,                  // ángulo de bloqueo horizontal (grados)
+                                        Optional.empty(),       // aplica a todos los tipos de daño
+                                        0.0F,                   // reducción base
+                                        1.0F                    // factor (bloquea todo el daño restante)
+                                )),
+                                new BlocksAttacks.ItemDamageFunction(3.0F, 1.0F, 1.0F),
+                                Optional.of(context.getOrThrow(DamageTypeTags.BYPASSES_SHIELD)),
+                                Optional.of(SoundEvents.SHIELD_BLOCK),
+                                Optional.of(SoundEvents.SHIELD_BREAK)
+                        )
+                )
                 .component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK);
     }
 }

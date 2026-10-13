@@ -7,8 +7,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Item.Properties;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import shield.modid.EnchantShieldMod;
 
@@ -18,28 +16,22 @@ import shield.modid.EnchantShieldMod;
  */
 public class ModShields {
 
-    // Tags de reparación para cada escudo (se definen en data/tags/items/)
+    // Tags de reparación para cada escudo (se definen en data/enchantshield-mod/tags/item/)
     public static final TagKey<Item> ENCHANTABLE_SHIELD_REPAIR = TagKey.create(
-        Registries.ITEM, 
+        Registries.ITEM,
         Identifier.fromNamespaceAndPath(EnchantShieldMod.MOD_ID, "enchantable_shield_repair")
     );
     public static final TagKey<Item> REINFORCED_SHIELD_REPAIR = TagKey.create(
-        Registries.ITEM, 
+        Registries.ITEM,
         Identifier.fromNamespaceAndPath(EnchantShieldMod.MOD_ID, "reinforced_shield_repair")
     );
     public static final TagKey<Item> MYSTICAL_SHIELD_REPAIR = TagKey.create(
-        Registries.ITEM, 
+        Registries.ITEM,
         Identifier.fromNamespaceAndPath(EnchantShieldMod.MOD_ID, "mystical_shield_repair")
     );
     public static final TagKey<Item> WOODEN_SHIELD_REPAIR = TagKey.create(
-        Registries.ITEM, 
-        Identifier.fromNamespaceAndPath(EnchantShieldMod.MOD_ID, "wooden_shield_repair")
-    );
-
-    // Tag general para todos los escudos del mod
-    public static final TagKey<Item> SHIELDS = TagKey.create(
         Registries.ITEM,
-        Identifier.fromNamespaceAndPath(EnchantShieldMod.MOD_ID, "shields")
+        Identifier.fromNamespaceAndPath(EnchantShieldMod.MOD_ID, "wooden_shield_repair")
     );
 
     // Instancias de los escudos (se inicializan en registerShields)
@@ -55,57 +47,26 @@ public class ModShields {
     public static void registerShields() {
         EnchantShieldMod.LOGGER.info("Registering custom shields...");
 
-        // Crear y registrar cada escudo usando ShieldTemplate (que extiende ShieldItem)
-        ENCHANTABLE_SHIELD = registerShield(
-            "enchantable_shield",
-            ShieldTemplate.createShieldProperties(336, EnchantShieldMod.id("enchantable_shield")),
-            15  // encantabilidad
-        );
-        
-        REINFORCED_SHIELD = registerShield(
-            "reinforced_shield",
-            ShieldTemplate.createShieldProperties(672, EnchantShieldMod.id("reinforced_shield")),
-            10
-        );
-        
-        MYSTICAL_SHIELD = registerShield(
-            "mystical_shield",
-            ShieldTemplate.createShieldProperties(252, EnchantShieldMod.id("mystical_shield")),
-            25
-        );
-        
-        WOODEN_SHIELD = registerShield(
-            "wooden_shield",
-            ShieldTemplate.createShieldProperties(112, EnchantShieldMod.id("wooden_shield")),
-            15
-        );
+        ENCHANTABLE_SHIELD = registerShield("enchantable_shield", 336, 15, ENCHANTABLE_SHIELD_REPAIR);
+        REINFORCED_SHIELD  = registerShield("reinforced_shield", 672, 10, REINFORCED_SHIELD_REPAIR);
+        MYSTICAL_SHIELD    = registerShield("mystical_shield", 252, 25, MYSTICAL_SHIELD_REPAIR);
+        WOODEN_SHIELD      = registerShield("wooden_shield", 112, 15, WOODEN_SHIELD_REPAIR);
 
-        EnchantShieldMod.LOGGER.info("Registered: enchantable_shield");
-        EnchantShieldMod.LOGGER.info("Registered: reinforced_shield");
-        EnchantShieldMod.LOGGER.info("Registered: mystical_shield");
-        EnchantShieldMod.LOGGER.info("Registered: wooden_shield");
+        EnchantShieldMod.LOGGER.info("Registered 4 custom shields: enchantable, reinforced, mystical, wooden");
     }
 
     /**
-     * Registra un escudo con encantabilidad personalizada.
-     * Usa ShieldTemplate para asegurar que el componente BLOCKS_ATTACKS se aplique correctamente.
+     * Crea y registra un escudo con durabilidad, encantabilidad y material de reparación.
      */
-    private static ShieldItem registerShield(String name, Properties properties, int enchantability) {
-        // IMPORTANTE: Usar ShieldTemplate en lugar de ShieldItem para que se use nuestra clase personalizada
-        ShieldItem shield = new ShieldTemplate(properties);
-        
-        ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, EnchantShieldMod.id(name));
+    private static ShieldItem registerShield(String name, int maxDamage, int enchantability, TagKey<Item> repairItem) {
+        Identifier id = EnchantShieldMod.id(name);
+        ShieldItem shield = new ShieldTemplate(
+            ShieldTemplate.createShieldProperties(maxDamage, id, enchantability, repairItem)
+        );
+
+        ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, id);
         Registry.register(BuiltInRegistries.ITEM, key, shield);
-        
-        return shield;
-    }
 
-    /**
-     * Ejemplo de cómo crear stacks pre-encantados para loot tables o crafting
-     */
-    public static ItemStack createEnchantedShieldExample() {
-        ItemStack stack = new ItemStack(ENCHANTABLE_SHIELD);
-        // Los encantamientos se añaden via EnchantmentHelper en runtime
-        return stack;
+        return shield;
     }
 }

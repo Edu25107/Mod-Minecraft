@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "AMA",
+    "MIM",
+    " A "
+  ],
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "M": "minecraft:amethyst_block",
+    "I": "minecraft:iron_ingot"
+  },
+  "result": {
+    "id": "enchantshield-mod:mystical_shield"
+  }
+}
