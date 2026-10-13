@@ -4,6 +4,7 @@
     "enchantshield-mod:enchantable_shield",
     "enchantshield-mod:reinforced_shield",
     "enchantshield-mod:mystical_shield",
-    "enchantshield-mod:wooden_shield"
+    "enchantshield-mod:wooden_shield",
+    "enchantshield-mod:perfect_wooden_shield"
   ]
 }

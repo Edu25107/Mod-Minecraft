@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "W",
+    "W"
+  ],
+  "key": {
+    "W": "enchantshield-mod:wooden_shield"
+  },
+  "result": {
+    "id": "enchantshield-mod:perfect_wooden_shield"
+  }
+}

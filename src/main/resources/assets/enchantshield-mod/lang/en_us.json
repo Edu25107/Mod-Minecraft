@@ -3,6 +3,7 @@
   "item.enchantshield-mod.reinforced_shield": "Reinforced Shield",
   "item.enchantshield-mod.mystical_shield": "Mystical Shield",
   "item.enchantshield-mod.wooden_shield": "Wooden Shield",
+  "item.enchantshield-mod.perfect_wooden_shield": "Perfect Wooden Shield",
   "enchantment.enchantshield-mod.example_shield_enchantment": "Projectile Protection",
   "tag.item.enchantshield-mod.shields": "Shields",
   "tag.item.enchantshield-mod.thorns_supported": "Thorns (Supported)",
@@ -10,5 +11,6 @@
   "tag.item.enchantshield-mod.enchantable_shield_repair": "Repairs Enchantable Shield",
   "tag.item.enchantshield-mod.reinforced_shield_repair": "Repairs Reinforced Shield",
   "tag.item.enchantshield-mod.mystical_shield_repair": "Repairs Mystical Shield",
-  "tag.item.enchantshield-mod.wooden_shield_repair": "Repairs Wooden Shield"
+  "tag.item.enchantshield-mod.wooden_shield_repair": "Repairs Wooden Shield",
+  "tag.item.enchantshield-mod.perfect_wooden_shield_repair": "Repairs Perfect Wooden Shield"
 }

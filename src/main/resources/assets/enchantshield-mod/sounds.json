@@ -1,0 +1,11 @@
+{
+  "perfect_shield_block": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "enchantshield-mod:perfect_shield_block",
+        "stream": false
+      }
+    ]
+  }
+}

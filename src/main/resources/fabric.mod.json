@@ -22,6 +22,10 @@
 			"shield.modid.client.EnchantShieldModClient"
 		]
 	},
+	"mixins": [
+		"enchantshield-mod.mixins.json",
+		"enchantshield-mod.client.mixins.json"
+	],
 	"depends": {
 		"fabricloader": ">=0.19.5",
 		"minecraft": "~26.3",

@@ -75,6 +75,28 @@ group=shield.modid
       mano secundaria. Solución dirigida: solo Thorns cambia, NO se activan Protection / Fire /
       Blast / Projectile Protection en escudos. Verificado en runtime (mesa de encantamientos y
       libro en el yunque).
+- [x] **Espinas hace daño al atacar un escudo encantado**: mixin
+      `ShieldThornsBlockingMixin` (common, `enchantshield-mod.mixins.json`) que, en
+      `LivingEntity#applyItemBlocking`, cuando el golpe queda **totalmente bloqueado**
+      (daño restante 0), invoca la pipeline vanilla
+      `EnchantmentHelper.doPostAttackEffects` (la misma de `post_attack`). Sin el mixin,
+      `hurtServer` devuelve `false` con bloqueo completo y el atacante nunca procesa los
+      efectos `post_attack` de la víctima → Thorns nunca disparaba. Con el mixin, Espinas
+      aplica su daño (1-5) y desgasta el escudo (+2) con su probabilidad de 50 %/nivel
+      (ajustada en `thorns.json`; el vanilla es 15 %/nivel),
+      usando el JSON data-driven de `thorns.json`. Solo dispara en bloqueo total para no
+      duplicar el disparo cuando queda daño restante (ahí vanilla ya lo procesa).
+- [x] **Respiración acuática (Respiration) aplicable a los escudos, activa solo al bloquear**:
+      se sobrescribe `data/minecraft/enchantment/respiration.json` cambiando `supported_items`
+      por el tag `enchantshield-mod:respiration_supported` (une
+      `#minecraft:enchantable/head_armor` con `#enchantshield-mod:shields`), de modo que la mesa
+      y el yunque aceptan Respiración en los escudos. En 26.3 Respiración es data-driven y aplica
+      el atributo `minecraft:oxygen_bonus` **solo cuando el objeto está en una de sus `slots`**
+      (`head`), y un escudo bloqueado no ocupa ranura, así que el efecto no se aplicaría. El mixin
+      `ShieldRespirationBlockingMixin` (common) reproduce la misma fórmula de
+      `LivingEntity#decreaseAirSupply` (prob. de no consumir aire = bonus/(bonus+1), bonus = 1 por
+      nivel) leyendo el nivel del escudo con el que se está bloqueando
+      (`getItemBlockingWith()`). Si el escudo no tiene Respiración, no hace nada.
 - [x] Renderizador custom `CustomShieldSpecialRenderer` + registro en `onInitializeClient`.
 - [x] Modelos de item (normal/bloqueo) y definiciones de item usan el tipo
       `enchantshield-mod:custom_shield` con su textura.
@@ -95,13 +117,16 @@ gradle.properties                     # versiones
 gradle/wrapper/gradle-wrapper.properties  # Gradle 9.7.1
 gradlew, gradlew.bat, gradlew.ps1     # wrappers
 tools/                                # scripts dev que generan texturas (no se compilan)
-  GenerateTextures.java
+  GenerateTextures.java                # OBSOLETO: dibuja en todo el canvas (layout UV roto)
+  GenerateShieldTexturesV2.java        # layout UV vanilla correcto (usar este); voltea el arte verticalmente
   generate_shield_textures.py
 src/main/java/shield/modid/
   EnchantShieldMod.java               # ModInitializer (MOD_ID="enchantshield-mod", id(String))
   item/ShieldTemplate.java            # propiedades del escudo (enchantable + BlocksAttacks + repairable)
   item/ModShields.java                # registro de los 4 escudos
   item/ModCreativeTab.java            # añade a COMBAT
+  mixin/ShieldThornsBlockingMixin.java  # Thorns se dispara al bloquear con escudo encantado
+  mixin/ShieldRespirationBlockingMixin.java # Respiración activa al bloquear (oxygen_bonus)
 src/client/java/shield/modid/client/
   EnchantShieldModClient.java         # ClientModInitializer -> registra el special model type
   render/CustomShieldSpecialRenderer.java  # renderer + Unbaked(MapCodec)
@@ -117,9 +142,11 @@ src/main/resources/
     recipe/*.json
     tags/item/shields.json, *_repair.json
     tags/item/thorns_supported.json, thorns_primary.json  # armor+escudos para Thorns
+    tags/item/respiration_supported.json  # head_armor+escudos para Respiración
     enchantment/example_shield_enchantment.json
   data/minecraft/
     enchantment/thorns.json           # override: Thorns también acepta escudos
+    enchantment/respiration.json       # override: Respiración también acepta escudos
     tags/
       item/enchantable/durability.json  # añade los 4 escudos (Unbreaking/Mending)
       enchantment/in_enchanting_table.json  # añade el encantamiento custom a la mesa (replace:false)
@@ -275,8 +302,17 @@ Tipos de efecto valor: `add`/`multiply`/`remove_binomial`/`all_of`/`set`... (ver
    definition no usa `enchantshield-mod:custom_shield`.
 7. **Regenerar texturas con `tools/`** puede recrear archivos; el `.py` tiene una ruta
    hardcodeada a otro equipo (`C:\Users\videojuegos\...`). Ajusta `output_dir` o usa el Java.
-8. **Mixins**: fueron borrados. Si añades mixins, vuelve a crear
-   `enchantshield-mod.mixins.json` (+ client) y declararlos en `fabric.mod.json`.
+   **OJO con el layout UV del escudo**: el `ShieldModel` vanilla (placa `texOffs(0,0)`,
+   box 12x22x1 sobre canvas 64x64) solo "ve" las regiones norte `(1,1)-(13,23)` y sur
+   `(14,1)-(26,23)`, más el mango `(26,0)-(42,12)`. Si dibujas el arte en TODO el canvas,
+   el inventario muestra solo el cuadrante superior-izquierdo (escudo pequeño/cortado).
+   Usa `GenerateShieldTexturesV2.java` (layout correcto); `GenerateTextures.java` y el `.py`
+   antiguos dibujan en todo el canvas y están obsoletos.
+8. **Mixins**: hay dos common (`ShieldThornsBlockingMixin` y `ShieldRespirationBlockingMixin`,
+   `enchantshield-mod.mixins.json`, declarado en `fabric.mod.json`). Si añades mixins de
+   cliente, crea `enchantshield-mod.client.mixins.json` y añádelo a `fabric.mod.json` con
+   `"environment": "client"`. El config usa `compatibilityLevel: "JAVA_25"` y
+   `injectors.defaultRequire: 1` (si el target no aplica, el juego no arranca).
 9. **Namespaces con guion** (`enchantshield-mod`) son válidos; el path NO debe llevar mayúsculas.
 10. **`supported_items`/`primary_items` en formato lista NO aceptan tags** (`"#minecraft:..."`).
     El formato lista es solo IDs de item directos; un `#tag` da

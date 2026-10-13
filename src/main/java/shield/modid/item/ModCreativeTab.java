@@ -29,11 +29,13 @@ public class ModCreativeTab {
             Item reinforced = ModShields.REINFORCED_SHIELD;
             Item mystical = ModShields.MYSTICAL_SHIELD;
             Item wooden = ModShields.WOODEN_SHIELD;
+            Item perfectWooden = ModShields.PERFECT_WOODEN_SHIELD;
 
             if (enchantable != null) entries.accept(new ItemStack(enchantable));
             if (reinforced != null) entries.accept(new ItemStack(reinforced));
             if (mystical != null) entries.accept(new ItemStack(mystical));
             if (wooden != null) entries.accept(new ItemStack(wooden));
+            if (perfectWooden != null) entries.accept(new ItemStack(perfectWooden));
         });
     }
 }

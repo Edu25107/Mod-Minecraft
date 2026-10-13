@@ -3,6 +3,7 @@
   "item.enchantshield-mod.reinforced_shield": "Escudo Reforzado",
   "item.enchantshield-mod.mystical_shield": "Escudo Místico",
   "item.enchantshield-mod.wooden_shield": "Escudo de Madera",
+  "item.enchantshield-mod.perfect_wooden_shield": "Escudo de Madera Perfecto",
   "enchantment.enchantshield-mod.example_shield_enchantment": "Protección Proyectiles",
   "tag.item.enchantshield-mod.shields": "Escudos",
   "tag.item.enchantshield-mod.thorns_supported": "Espinas (aplicable)",
@@ -10,5 +11,6 @@
   "tag.item.enchantshield-mod.enchantable_shield_repair": "Repara Escudo Encantable",
   "tag.item.enchantshield-mod.reinforced_shield_repair": "Repara Escudo Reforzado",
   "tag.item.enchantshield-mod.mystical_shield_repair": "Repara Escudo Místico",
-  "tag.item.enchantshield-mod.wooden_shield_repair": "Repara Escudo de Madera"
+  "tag.item.enchantshield-mod.wooden_shield_repair": "Repara Escudo de Madera",
+  "tag.item.enchantshield-mod.perfect_wooden_shield_repair": "Repara Escudo de Madera Perfecto"
 }
